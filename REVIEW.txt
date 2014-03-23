@@ -1,0 +1,30 @@
+/*****************
+ * skin for Tistory.
+ * made : Axsusia
+ * DTL : 
+ * BLOG : http://zion437.tistory.com
+ ******************/
+
+1. 기준
+- 인터넷 익스플로러 8.0 이상, 파이어폭스, 크롬 
+- HTML 5
+- CSS3
+- 
+
+
+2. 반응형 기본 틀 가로 폭 지정할 것
+- 
+
+
+3.
+- HTML <> CSS <> JAVASCRIPT 
+- 하나의 프레임 워크로 작동
+
+
+4. 단위의 분리
+ITEM > CONTAINER > GRID > COL
+
+
+
+
+
