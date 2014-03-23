@@ -25,6 +25,15 @@
 ITEM > CONTAINER > GRID > COL
 
 
+5. function list
+- 로케이터
+- 서브카테고리 복사
+- css 분기
+- ajax 모듈화
+- js 분기
+
+
+
 
 
 
