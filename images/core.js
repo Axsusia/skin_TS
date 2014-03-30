@@ -47,6 +47,7 @@ TS.dom = function(selecter){
 		return this;
 	}
 
+	//public 
 	var _findItem = function(){
 		_selecter = document.getElementsByClassName(_selecter);
 		console.log('here is the findItem inside;;;');
