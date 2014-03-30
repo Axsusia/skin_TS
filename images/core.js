@@ -39,10 +39,16 @@ TS.module = TS.module || {};
 TS.ajax = TS.ajax || {};
 TS.app = TS.app || {};
 
+
 TS.dom = function(selecter){
 	var _selecter = selecter;
+	//var _get;
+	if(!_selecter){
+		return this;
+	}
+
 	var _findItem = function(){
-		//return this.dom.getElementsByClassName(this._selecter);
+		_selecter = document.getElementsByClassName(_selecter);
 		console.log('here is the findItem inside;;;');
 		return this;
 	}
@@ -55,12 +61,20 @@ TS.dom = function(selecter){
 		return this;
 	}
 
+	//return elmt
+	var _get = function(){
+		return _selecter;
+	}
+
 	return {
 		findItem : _findItem,
 		itemHide : _itemHide,
-		itemShow : _itemShow
+		itemShow : _itemShow,
+		get : _get
 	}
 }
+
+
 // key class for Tistory
 TS.key = {
 	findKey : function(){
@@ -83,8 +97,6 @@ TS.setting = function(setData){
 		//eavl();
 	}
 }
-
-
 
 // ajax calling
 TS.ajax = {
@@ -137,6 +149,4 @@ TS.util.getElementsByClassName = function(className, tag, elm){
 	return returnElements;
 }
 
- 
-
- $T = TS;
+$T = TS;
