@@ -27,7 +27,6 @@ function $$(val){
 /**
  * @author Axsusia
  * @date 2014.03.30
- * @param selecter
  */
 var TS = TS || {};
 // 확장 클래스
@@ -40,18 +39,28 @@ TS.module = TS.module || {};
 TS.ajax = TS.ajax || {};
 TS.app = TS.app || {};
 
-TS.dom = {
-	findItem : function(itemName){
+TS.dom = function(selecter){
+	var _selecter = selecter;
+	var _findItem = function(){
+		//return this.dom.getElementsByClassName(this._selecter);
+		console.log('here is the findItem inside;;;');
+		return this;
+	}
+	var _itemHide = function(){
+		console.log('실행중');
+		console.log(_selecter);
+		return this;
+	}
+	var _itemShow = function(){
+		return this;
+	}
 
-	},
-	itemHide : function(itemName){
-
-	},
-	itemShow : function(itemName){
-
+	return {
+		findItem : _findItem,
+		itemHide : _itemHide,
+		itemShow : _itemShow
 	}
 }
-
 // key class for Tistory
 TS.key = {
 	findKey : function(){
