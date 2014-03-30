@@ -29,34 +29,9 @@ function $$(val){
  * @date 2014.03.30
  * @param selecter
  */
-var TS = TS || function(selecter){
-
-	if(selecter != null && selecter != ''){
-		if(typeof selecter == 'object'){
-
-		}else if(typeof selecter == 'Array'){
-
-		}else{
-			selecter = null;
-		}
-	}
-
-	var _doc = document;
-	var _item = _doc.getElementsByClassName("item-");
-
-	for(var j=0 ;j < _item.length; j++){
-		console.log(j + ' <<<< num');
-	}
-
-
-	console.log('=====test=====');
-	console.log(_item);
-	console.log('=====test=====');
-
-};
-
-
+var TS = TS || {};
 // 확장 클래스
+TS.dom = TS.dom || {};
 TS.key = TS.key || {};
 TS.setting = TS.setting || {};
 TS.util = TS.util || {};
@@ -64,6 +39,18 @@ TS.module = TS.module || {};
 //TS.data = TS.data || {};
 TS.ajax = TS.ajax || {};
 TS.app = TS.app || {};
+
+TS.dom = {
+	findItem : function(){
+
+	},
+	itemHide : function(){
+
+	},
+	itemShow : function(){
+
+	}
+}
 
 // key class for Tistory
 TS.key = {
@@ -80,6 +67,41 @@ TS.key = {
 		//var _url = documents.
 	}
 }
+
+//setting for basic
+TS.setting = {
+	js : function(){
+
+	},
+	css : function(){
+
+	}
+}
+
+// ajax calling
+TS.ajax = {
+	data : {
+		type : '',
+		list : '',
+		paging : '',
+		article : ''
+	},
+	call : function(){
+
+	},
+	passing : function (){
+
+	}
+}
+
+TS.app.locator = function(){
+
+}
+
+TS.app.subCategory = function(){
+
+}
+
 
 TS.util.findAllClass = function (node, className, tag){
 	//var doc = documents;
