@@ -4,7 +4,7 @@ var tt = '1';
 	console.log(tt);
 	tt="2222";
 	console.log(tt);
-	console.log('----');	
+	console.log('----');
 	var ttt = "444"
 	console.log(ttt + "test lll");
 }();
@@ -41,13 +41,13 @@ TS.ajax = TS.ajax || {};
 TS.app = TS.app || {};
 
 TS.dom = {
-	findItem : function(){
+	findItem : function(itemName){
 
 	},
-	itemHide : function(){
+	itemHide : function(itemName){
 
 	},
-	itemShow : function(){
+	itemShow : function(itemName){
 
 	}
 }
@@ -55,7 +55,7 @@ TS.dom = {
 // key class for Tistory
 TS.key = {
 	findKey : function(){
-		_urlPaatien();
+		//_urlPaatien();
 		var _categoryName = documents.getElementsByClassName("categoryName")[0];
 		var _keyArr = _categoryName.split('/');
 
@@ -69,28 +69,31 @@ TS.key = {
 }
 
 //setting for basic
-TS.setting = {
-	js : function(){
-
-	},
-	css : function(){
-
+TS.setting = function(setData){
+	if (setData != null || setData != ''){
+		//eavl();
 	}
 }
 
+
+
 // ajax calling
 TS.ajax = {
-	data : {
-		type : '',
-		list : '',
-		paging : '',
-		article : ''
-	},
-	call : function(){
+	data : [],
+	call : function(url, dataType, callback){
+		console.log('its ajax call------------------')
+		console.log('console.log make url');
 
+		return callback != null ? callback(this.data[url]) : null;
 	},
-	passing : function (){
-
+	passing : function (url, data){
+		var _passingData = {
+			type : '',
+			article : '',
+			paging : '',
+			list : ''
+		}
+		this.data[url] = _passingData;
 	}
 }
 
@@ -102,13 +105,11 @@ TS.app.subCategory = function(){
 
 }
 
-
 TS.util.findAllClass = function (node, className, tag){
 	//var doc = documents;
 	//var root = doc.getElementsByTag(tag==null?'*':tag);
 	//var elements = root.ge
 }
-
 
 TS.util.getElementsByClassName = function(className, tag, elm){
 	var testClass = new RegExp("(^|\\s)" + className + "(\\s|$)");
