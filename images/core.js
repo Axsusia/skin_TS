@@ -24,6 +24,36 @@ function $$(val){
 	console.log(val);
 }
 
+
+/**
+ * TS plug - in 선언 부 및 시작부
+ * 여기서 prototype 은 상속을 다 받도록 한다.
+ */
+(function (document, window) { "use strict";
+
+	window.testFunction  = function (sName){
+		console.log('test function in here');
+		this._sName = sName;
+		console.log(this._sName + "  << test");
+	}
+
+	// 상속 받는다.
+	window.export = function(){
+
+	}
+
+	window.extents = function(){
+
+	}
+
+
+
+})(document, window);
+
+window.testFunction();
+
+
+
 /**
  * @author Axsusia
  * @date 2014.03.30
