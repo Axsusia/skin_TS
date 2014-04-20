@@ -31,26 +31,53 @@ function $$(val){
  */
 (function (document, window) { "use strict";
 
+	var version = {
+		ver : "1.0.0",
+		codeName : "cool"
+	}
+
+	function test22 (name){
+		console.log("test for scope +" + name);
+		console.log(this);
+		return this;
+	}
+
 	window.testFunction  = function (sName){
 		console.log('test function in here');
 		this._sName = sName;
+		console.log(this);
 		console.log(this._sName + "  << test");
 	}
 
 	// 상속 받는다.
 	window.export = function(){
-
+		window[obj] = obj;
 	}
 
-	window.extents = function(){
 
+
+	// 확장
+	function extend (obj) {
+		console.log("확장 : "+obj);
+
+		//this.prototype.extend = this;
 	}
+	//test22("for use here").extend("1").extend("2");
+	//extend("1").extend("2");
 
+	// deep copy system
+	function copy (origin) {
+		var temp;
+		for (p in origin){
+			temp[p] = origin[p];
+		}
+		return temp;		
+	}
 
 
 })(document, window);
 
-window.testFunction();
+window.testFunction("testtest");
 
 
 
