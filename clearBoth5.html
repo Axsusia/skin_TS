@@ -1,0 +1,433 @@
+<!doctype html>
+<html>
+<head>
+<script>
+"use strict";
+// Object type add create function
+// 오브젝트의 맴버 메서드 중에 create 라는 멤버 메소드가 없으면
+if(typeof Object.create === "function"){
+	// create 라는 맴버 메소드를 만들고 인자로 리터럴 함수 o를 받는다.
+	Object.create = function(o){
+		// F 라는 변수로 펑션 객채를 하나 만들고,
+		var F = function(){};
+		// 이 F 의 prototype에 리터럴 함수 o를 넣은 다음,
+		F.prototype = o;
+		// 이 o가 prototype으로 추가된 F를 리턴 시켜서 끝낸다.
+		return new F();
+	}
+}
+
+
+/*/ 프로토타입을 열거하는 방식
+var i;
+var properties = [
+	"first",
+	"second",
+	"last"
+];
+for(var i = 0 ; i < properties.length ; i++){
+	console.log(properties[i] +  " : " + another_stooge[properties[i]]);
+}
+//*/
+
+var myObj = {
+	value : 0,
+	increment : function(inc){
+		this.value += typeof inc === 'number' ? inc : 1;
+	}
+}
+// myObj 에 double 이라는 프로퍼티를 만든다.
+myObj.double = function(){
+	// this를 사용해서 that 이라는 객체를 만드는데, 여기서 this 는 자기 자신을 가르키게되고, 
+	// that 은 this 를 받아서 역시 자기 자신을 가르키게 된다.
+	var that = this;
+	// helper 라는 객체를 하나 만들아서 이 안에서 연산을 하는데
+	// this를 사용하는 것이 아니라 that(myObj) 를 사용하는 것에 주의 하자.
+	var helper = function(){
+		// 여기서 this 가 가르키고 있는 것은 문맥상 window 가 된다. 
+		console.log(this);
+		that.value = add (that.value, that.value);
+	};
+	helper();
+};
+
+// Function class add function
+// Function 생성자에 method 라는 키워드로 함수를 하나 만들고 인자 값으로 2개의 값을 받는다.
+Function.prototype.method = function(name, func){
+	// this 즉 Function 의 prototype에 name 이라는 멤버를 추가하면서 메소드로 func을 넣어 준다.
+	this.prototype[name] = func;
+	// 그리고 나서 자기 자신을 반환 시킨다. 즉 프로토타입 맴버 추가를 쉽게 해주기 위한 메소드 이다.
+	return this;
+} 
+
+// Closure 됨
+// myObj2 에 펑션 객체를 하나 만든다.
+var myObj2 = function () {
+	// 내부 변수로 value 를 선언한다.
+	var value = 0;
+	console.log("이 함수는 최소 실행 ");
+	// 리턴 함수를 만드는데, 멤버는 increment 와 getValue 로써 2개의 펑션 맴버를 리턴 시킨다.
+	return {
+		increment : function (inc){
+			value += typeof inc === "number" ? inc : 1 ;
+		},
+		getValue : function(){
+			return value;
+		}
+	}
+// 마지막 줄에서 () 를 사용함으로써, 이 펑션 객체를 만들자 마자 실행 시킨다. 그러면 myObj 는 리턴값으로 2개의 맴버를 가지게 된다.
+}();
+console.log(myObj2);
+// 그리해서 아래의 문장이 사용 가능해 지는 것이다.
+console.log(myObj2.getValue());
+
+
+// quo 라는 객체를 만들고 인자로 status 를 받는다.
+var quo = function (status){
+	// 이 quo는 리턴 함수를 가지고 있는데 그 멤버로써 getStatus 라는 펑션 객체를 가지고 있다.
+	return {
+		// getStatus 가 하는 일은 단순히 받은 status 인자를 돌려주는 일이다.
+		getStatus : function(){
+			return status;
+		}
+	}
+}
+// quo 를 이용해서 myQuo 라는 객체를 만들어낸다.
+// 여기서는 인스턴스를 생성하는데 new 라는 키워드를 사용하지 않았다.
+// 그렇기 때문에 myQuo는 quo의 리턴 객체인 getStatus에 계속해서 접근 할 수 있는 권한을 가지고 있다.
+// 어떻게 보면 prototype 이다.
+var myQuo = quo("amazed");
+// 위와 다르게 문장 뒤에 () 가 없었음으로 quo 를 이용한 인스턴스 변수에서만 quo 의 리턴 함수 멤버를 사용 할 수 있다.
+console.log(myQuo.getStatus());
+
+
+// 올바른 방법으로 노드 배열에 이벤트 핸들러 함수를 할당하는 함수이다.
+// add_the_handlers 는 nodes 라는 인자를 받는 메소드이다.
+var add_the_handlers = function(nodes){
+	// 변수 i를 선언한다. 카운트 용이다.
+	var i ;
+	// i 는 nodes의 길이 만큼 반복 수행하게 된다.
+	for (i = 0 ; i < nodes.length ; i++){
+		// 반복 수행 될때에 nodes[i]에 onclick 이벤트를 걸어주게 되는데 이때 넘겨 주는 값이 i 값이다.
+		nodes[i].onclick  = function(i){
+			// 이제 넘겨 받은 i 값을 console.log 에서 확인해 볼 수 있게 된다.
+			return function(e){
+				console.log(i);
+			};
+		// 이 onclick 기능이 생길 때에 (i) 값을 넘겨 줌으로써 만들 때마다 콘솔이 찍히게 된다. 
+		}(i);
+	}
+};
+
+// Function 의 prototype 에 curry 라는 이름을 가진 메소드를 추가한다.
+// curry(커링) 이란 인자를 여러개 받는 함수를 분리하여, 인자를 하나 받는 함수를 체인으로 만드는 방법이다.
+Function.method("curry", function(){
+	var 
+		// slice 를 선언하는데 arguments 는 배열 형식이 아니라서 이걸 배열로 바꾸기 위해 사용하기 위함이다.
+		slice = Array.prototype.slice,
+		// args 에 arguments 를 slice apply 시켜서 인자를 배열 형식으로 만든 args 를 만든다.
+		args = slice.apply(arguments),
+		that = this
+	;
+	console.log(" >>>> args >> " + args);
+	console.log(" >>>> that >> " + that);
+	console.log(" >>>> this >> " + this);
+	// return 메소드를 만든다
+	return function(){
+		// 
+		return that.apply(null, args.concat(slice.apply(arguments)));
+	};
+});
+
+var sum = function(a,b){
+	return a + b;
+}
+
+var sum15 = sum.curry(15);
+console.log(sum15);
+var sum7 = sum.curry(7);
+console.log(sum7);
+
+console.log(sum15(3)); // return 18
+console.log(sum7(13)); // return 20
+
+/*********
+ * 상속
+ *********/
+
+// 의사 클래스 방식 상속
+Function.method("new", function(){
+	var that = Object.create(this.prototype);
+	var other = this.apply(that, arguments);
+	return (typeof other === "object" && other) || that;
+});
+
+var Mammal = function(name){
+	this.name = name;
+}
+
+Mammal.prototype.getName = function(){
+	return this.name;
+}
+Mammal.prototype.says = function(){
+	return this.saying || '';
+}
+
+var myMammal = new Mammal("Herb the Mammal");
+var name = myMammal.getName();
+
+var Cat = function(name){
+	this.name = name;
+	this.saying = "meow";
+}
+
+Cat.prototype = new Mammal();
+
+Cat.prototype.purr = function(n){
+	var i, s = '';
+	for (i = 0 ; i < n ; i ++){
+		if(s){
+			s += "-";
+		}
+		s += "r";
+	}
+	return s;
+}
+Cat.prototype.getName = function(){
+	return this.says() + " " + this.name + " " + this.says();
+}
+
+var mayCat = new Cat("Henrietta");
+var says = myCat.says();
+var purr = myCat.purr(5);
+var name = myCat.getName();
+
+// 좀 더 좋은 상속 방법
+Function.method("inherits", function(Parent){
+	// 아래와 같이 적으면 this.prototype 에 Parent의 생성자 함수가 들어가게 된다.
+	this.prototype = new Parent();
+	// 리턴값으로 자기 자신을 반환 시킨다. 메소드 체이닝 기법을 사용할 수 있게 된다.
+	return this;
+});
+
+var Dog = function(name){
+	this.name = name;
+	this.saying = "ww";
+}.
+inherits(Mammal).
+method("purr", function(){
+	var i, s = "";
+	for (i = 0 ; i < n ; i ++){
+		if(s){
+			s += "-";
+		}
+		s += "r";
+	}
+	return s;
+}).
+method("getName", function(){
+	return this.says() + " " + this.name + " " + this.says();
+});
+
+// 객체를 기술하는 객체
+
+// prototype 방식
+var myMammalNew = {
+	name : "Herb the Mammal",
+	getName : function(){
+		return this.name;
+	},
+	says : function(){
+		return this.saying || "";
+	}
+}
+
+var myCatNew = Object.create(myMammalNew);
+myCatNew.name = "Henrietta";
+myCatNew.saying = "meow";
+myCatNew.purr = function(n){
+	var i, s = "";
+	for(i = 0 ; i < n ; i ++){
+		if(s){
+			s += '-';
+		}
+		s += "r";
+	}
+	return s;
+}
+myCatNew.getName = function(){
+	return this.says + " " + this.name + " " + this.says();
+}
+
+// 함수를 사용한 방식
+var constructor = function(spec, my){
+	var that; // and private property add
+	my = my || {};
+	return that;
+}
+
+var mammalObj = function(spec){
+	var that = {};
+
+	that.getName = function(){
+		return spec.name;
+	};
+
+	that.says = function(){
+		return spec.saying || "";
+	};
+
+	return that;
+}
+
+var myMammalObj = mammalObj({name : "Herb"});
+
+var catObj = function(spec){
+	spec.saying = spec.saying || "meow";
+	var that = mammalObj(spec);
+	that.purr = function(n){
+		var i, s = "";
+		for (i = 0 ; i < n ; i += i){
+			if(s){
+				s += "-";
+			}
+			s += "r";
+		}
+		return s;
+	};
+
+	that.getName = function(){
+		return that.says() + " " + spec.name + " " + that.says();
+	};
+	return that;
+}
+
+var myCatObj = catObj({name : "Henrietta"});
+
+Object.method("superior", function(name){
+	var 
+		that = this,
+		method = that[name]
+	;
+	return function(){
+		return method.apply(that, arguments);
+	};
+});
+
+var coolCat = function(spec){
+	var that = catObj(spec);
+	superGetName = that.superior(getName);
+	that.getName = function(n){
+		return "like " + superGetName() + " baby";
+	};
+	return that;
+};
+
+var myCoolCat = coolCat({name : "Bix"});
+var name = myCoolCat.getName();
+
+// 클레스 구성을 위한 부속품 
+// 객체를 구정할 때에 필요한 함수들을 조립하듯이 이벤트를 생성하여 만들어 주는 변수 객체이다. (아래참조)
+var eventuality = function(that){
+	var registry = {};
+
+	that.fire = function(event){
+		var 
+			array,
+			func,
+			handler,
+			i,
+			type = typeof event === "string" ? event : event.type
+		;
+
+		if(registry.hasOwnProperty(type)){
+			array = registry[type];
+			for(i = 0 ; i < array.length ; i += 1){
+				handler = array[i];
+				func = handler.method;
+				if(typeof func === "string"){
+					func = this[func];
+				}
+
+				func.apply(this, handler.parameters || [event]);
+			}
+		}
+		return this;
+	}
+
+	that.on = function(type, method, parameters){
+		var handler = {
+			method : method,
+			parameters : parameters
+		};
+		if(registry.hasOwnProperty(type)){
+			registry[type].push(handler);
+		}else{
+			registry[type] = [handler];
+		}
+		return this;
+	};
+	return that;
+}
+
+var oDiv = eventuality(document.getElementById("divTest"));
+oDiv.on("click", function(){alert("test")});
+
+var Person = function(){
+	//this//(// 실행문맥)
+	var _sName;
+	this.getName = function(){
+		return this._sName;
+	}
+	this.setName = function(sName){
+		this._sName = sName;
+	}
+};
+
+/*
+var elBtn = document.createElement("dd");
+elBtn.addEventLener("oncheck", function(){
+
+});
+*/
+
+var son1 = new Person("자식1");
+console.log(son1);
+/**
+ * 일반적으로 prototype 를 사용하는 방법
+ */
+
+var son2  = {};
+Person.call(son2, "자식2");
+console.log(son2);
+/**
+ * son2은 object의 prototype 을 상속 받았으나, 
+ * Person 의 prototype 를 이용하여 son2라는 인스턴스 변수가 완성되었다.
+ */
+
+</script>
+</head>
+<body>
+new 사용시
+1. 새로운 객체 생성
+2. 객체의 이름을 this로
+3. this의 멤버. 메소드 셋팅
+4, 함수의 prototype 속석에 들어가 있는 객체를 새로 생성한 객체의 __proto__ 속성과 매칭
+5. 객채 리턴
+
+new 를 빼면 위의 과정을 안거치기 때문에 전역에 this (살행 문맥을 가지고 있다.) 에 맴버 객체가 생길 수가 있다.
+
+윈도우 window
+브라우져 navigator
+문서 document
+이벤트 event
+요소 alement
+속성 attribute, property
+
+프로토타입에는 함수만..
+
+wit.nts-corp.com
+
+www.facebook.com/webfrontend
+</body>
+</html>
