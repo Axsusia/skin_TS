@@ -8,8 +8,10 @@
 	};
 
 
-	var $extend = function(name){
-
+	var $extend = function(name, protoObj){
+		var temp ;
+		temp.prototype = protoObj;
+		return temp;
 	};
 
 	var $export = function(name){

@@ -198,9 +198,9 @@ TS.util.getElementsByClassName = function(className, tag, elm){
 	var returnElements = [];
 	var current;
 	var length = elements.length;
-	for(var i=0; i<length; i++){
+	for (var i = 0; i < length; i ++) {
 		current = elements[i];
-		if(testClass.test(current.className)){
+		if (testClass.test(current.className)) {
 			returnElements.push(current);
 		}	
 	}
