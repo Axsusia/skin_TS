@@ -1,3 +1,38 @@
+
+/* 
+ * 기본 prototype 정의
+ *
+ */
+ // overloding
+if (typeof (Object.create) === "function"){
+	Object.create = function(o){
+		var F = function(){};
+		F.prototype = o;
+		return new F();
+	}
+}
+
+//prototype add
+Function.prototype.method = function (name, func){
+	this.prototype[name] = func;
+	return this;
+}
+
+// property copy from aother Object to this Object;
+Object.prototype.carryProperty = function(obj){
+	//if(typeof (obj) != "Object") return;
+	if(typeof (obj) === "Function") {
+		for(p in obj){
+			if(!this.hasOwnProperty(p)){
+				this[p] = obj[p];
+			}
+		}
+		return this;
+	} else {
+		return ;
+	}
+}
+
 (function(window, document){
 	
 	var loadDomScope = function(name){

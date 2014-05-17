@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+<div id="div1" data-key="test1">test data</div>
+<script type="text/javascript">
+	//ar data = JSON.parse(document.getElementById("div1").innerHTML);
+	//console.log(data);
+
+(function(){
+	var data1 = document.getElementById("div1");
+	var firstVal = data1.getAttribute("data-key");
+	console.log(firstVal + " <<< firstVal >>>");
+
+	var way2 = data1.dataset.key;
+	console.log(way2 + " <<<<< way2 >>>>>");
+
+	var way3 = document.querySelectorAll("data-key");
+	console.log(way3 + " <<<<< querySelectAll");
+	console.log(way3);
+})();
+</script>
+<div id="article">
+	<h1>제목</h1>
+	<div>
+		제목 영역 
+		<span></span>
+	</div>
+	<h2>서브제목</h2>
+	<div>
+		test space!
+	</div>
+	<H3>세번째 제목</H3>
+</div>
+<script>
+function findTitle(obj){
+
+	if(obj.nodeType === 1){
+		console.log(obj.nodeType + " < nodeType");
+		var reg = /[h|H][1-6]/;
+
+		if (reg.test(obj.nodeName)) {
+
+			var tagLinkAddress = (Math.floor(Math.random() * 999) + 1) + "" + (Math.floor(Math.random() * 999) + 1);
+			console.log(tagLinkAddress);
+
+			/* 다른 방법
+			var newAttribute = document.createAttribute("data-linkTitle");
+			newAttribute.value = tagLinkAddress;
+
+			var tagAttributes = obj.attributes;
+			tagAttributes.setNamedItem(newAttribute);
+			console.log(tagAttributes);
+			*/
+			addTitle(obj.nodeName, obj.innerHTML, tagLinkAddress);
+
+			var aTag = document.createElement("A");
+			aTag.name = tagLinkAddress;
+			aTag.innerHTML = obj.innerHTML;
+			obj.innerHTML = "";
+			console.log(aTag);
+			//obj.parentNode.insertBefore(aTag, obj);
+			obj.appendChild(aTag);
+		}else if (obj.children.length > 0) {
+			for (var i = 0 ; i < obj.children.length ; i ++) {
+				findTitle(obj.children[i]);
+			}
+		}
+	} else {
+		console.log("Exception error!");
+	}
+	// console.log();
+}
+var titleAry = [];
+function addTitle(tagName, tagValue, tagLinkAddress){
+	console.log(tagName + " / " + tagValue + " << data for make title list");
+
+	titleAry.push(tagName + "/" +tagValue + "/" + tagLinkAddress);
+}
+
+function makeTitle(data){
+	console.log(data);
+	if (data == null) return ;
+
+	var ulTag = document.createElement("UL");
+	var ulTagAtbs = ulTag.attributes;
+	var newAtbs = document.createAttribute("class");
+	newAtbs.value = "titleList"
+	ulTagAtbs.setNamedItem(newAtbs);
+
+	for (var i = 0 ; i < data.length ; i++) {
+		var 
+			oneData = data[i].split("/"),
+			tag = oneData[0],
+			title = oneData[1],
+			linkAddress = oneData[2]
+		;
+
+		var liTag = document.createElement("LI");
+
+		var attributes = liTag.attributes;
+
+		var newAttribute = document.createAttribute("class");
+		newAttribute.value = "title" + tag.replace(/[h|H]/, "");
+		attributes.setNamedItem(newAttribute);
+
+		var aTag = document.createElement("A");
+		aTag.href = "#"+linkAddress;
+		aTag.innerHTML = title ;
+
+		liTag.appendChild(aTag);
+		ulTag.appendChild(liTag);
+		//console.log(tag + title);
+	}
+	console.log(ulTag);
+	document.body.appendChild(ulTag);
+}
+
+var article = document.getElementById("article");
+console.log(article);
+findTitle(article);
+console.log(titleAry);
+makeTitle(titleAry);
+
+function controler (tag){
+	// tag add
+	
+
+	// attribute
+
+
+	// name
+
+
+	// class
+	return this;
+}
+</script>
+</body>
+</html>
