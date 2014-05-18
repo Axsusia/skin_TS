@@ -36,6 +36,13 @@
 		test space!
 	</div>
 	<H3>세번째 제목</H3>
+	<div> 세번째 목록 </div>
+	<div>
+		<h4>확인용 </h4>
+		<h4></h4>
+		<h4>확인용 222</h4>
+	</div>
+	<h2>2 단</h2>
 </div>
 <script>
 function findTitle(obj){
@@ -44,8 +51,8 @@ function findTitle(obj){
 		console.log(obj.nodeType + " < nodeType");
 		var reg = /[h|H][1-6]/;
 
-		if (reg.test(obj.nodeName)) {
-
+		if (reg.test(obj.nodeName) && obj.innerHTML) {
+			//  && obj.innerHTML != ""
 			var tagLinkAddress = (Math.floor(Math.random() * 999) + 1) + "" + (Math.floor(Math.random() * 999) + 1);
 			console.log(tagLinkAddress);
 
@@ -79,7 +86,6 @@ function findTitle(obj){
 var titleAry = [];
 function addTitle(tagName, tagValue, tagLinkAddress){
 	console.log(tagName + " / " + tagValue + " << data for make title list");
-
 	titleAry.push(tagName + "/" +tagValue + "/" + tagLinkAddress);
 }
 
@@ -126,6 +132,99 @@ console.log(article);
 findTitle(article);
 console.log(titleAry);
 makeTitle(titleAry);
+
+
+var testData = {
+	"data1" : function(){return "data1"},
+	"data2" : new Object(),
+	"data3" : new Array(),
+	"data4" : ["1", "2", "3", "4"],
+	"data5" : "just string"
+
+}
+
+var obj = obj || {};
+
+obj.each = function(object, callback){
+	var key;
+	for (key in object){
+		console.log(object[key] + ", " + key);
+		if (object.hasOwnProperty(key) === true) {
+			callback(key, object[key]);
+		}
+	}
+	return object;
+}
+
+obj.create = function (){
+	return new Object();
+}
+
+obj.copy = function (origin, copyObj){
+	if(typeof(copyObj) === "function"){
+		for (p in copyObj) {
+			origin[p] = copyObj[p];
+		}
+	}
+	return origin;
+}
+
+obj.findProperty = function (object, propertyName){
+	if (typeof object === "function"){
+		if (object.hasOwnProperty(propertyName)) return object[propertyName];
+	} 
+}
+
+obj.addProperty = function (object, nameOrObj, value){
+	if(typeof (nameOrObj) === "string" && value){
+		object[nameOrObj] = value;
+	} else if (typeof (nameOrObj) === "function") {
+		object = obj.each(nameOrObj, function(key, value){
+			obj[key] = value;
+		});
+	}
+	return object;
+}
+
+obj.each(testData, function(key, value){
+	console.log("it's callback")
+	console.log(key + " / " + value);
+});
+
+var tag = tag || {};
+tag.make = function (name){
+	return document.createElement(name);
+}
+tag.find = function (selecter){
+	return document.querySelectorAll(selecter);
+}
+tag.addAttr = function (obj){
+
+}
+
+
+
+var tag1 = {
+	_tagItem : null,
+	find : function (tagName){
+		return document.querySelectorAll(tagName);
+	},
+	make : function(tagName){
+		var newTag = document.createElement(tagName);
+		_tag = newTag;
+		return newTag;
+	},
+	addAttr : function(el, ObjOrName, value){
+		if(typeof(ObjOrName) === "function"){
+			var attr = document.createAttribute(attrName);
+			
+		} else {
+
+		}
+		
+		return this;
+	}
+}
 
 function controler (tag){
 	// tag add
