@@ -180,10 +180,23 @@ obj.addProperty = function (object, nameOrObj, value){
 		object[nameOrObj] = value;
 	} else if (typeof (nameOrObj) === "function") {
 		object = obj.each(nameOrObj, function(key, value){
-			obj[key] = value;
+			object[key] = value;
 		});
 	}
 	return object;
+}
+
+obj.extend = function(originObj, property){
+	var newObj = new Object();
+	newObj.prototype = originObj.prototype;
+
+	if(property != null && typeof property === "object"){
+		for (p in property) {
+			newObj[p] = originObj[p];
+		} 
+	}
+
+	return newObj;
 }
 
 obj.each(testData, function(key, value){
@@ -198,9 +211,32 @@ tag.make = function (name){
 tag.find = function (selecter){
 	return document.querySelectorAll(selecter);
 }
-tag.addAttr = function (obj){
+tag.setAttr = function (object, nameOrObj, value){
+	if(typeof nameOrObj === "function"){
+		var attr = document.createAttribute(nameOrObj);
+		attr.value = value;
+		object.setNamedItem(attr);
+	} else if(typeof nameOrObj === "object") {
+
+		object = obj.each(nameOrObj, function(key, value){	
+			var attr = document.createAttribute(key);
+			attr.value = value;
+			object.setNamedItem(attr);
+		})
+	}
+	return object;
+}
+
+tag.getAttr = function (object, name){
+	return ;
+}
+
+/*
+tag.makeAttr = function(name, value){
+	var attr = document.createAttribute(name);
 
 }
+*/
 
 
 
